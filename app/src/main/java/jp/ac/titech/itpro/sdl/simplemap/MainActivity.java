@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000L);
-        locationRequest.setFastestInterval(5000L);
+        //locationRequest.setInterval(10000000L);
+        locationRequest.setFastestInterval(1000L);
         locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         locationCallback = new LocationCallback() {
@@ -85,6 +86,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         };
+    }
+    public void onClickLocateButton(View v) {
+        Log.d(TAG, "onClickLocateButton");
+        if (state != UpdatingState.STARTED && googleApiClient.isConnected())
+            startLocationUpdate(true);
+        else
+            state = UpdatingState.REQUESTING;
     }
 
     @Override
